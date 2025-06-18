@@ -1,0 +1,12 @@
+Message encryption and decryption different languages Examples :
+
+
+* Happy Monday
+
+* இனிய திங்கட்கிழமை
+
+* ಶುಭ ಸೋಮವಾರ
+
+* शुभ सोमवार
+
+* సంతోషమైన సోమవారం
