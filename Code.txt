@@ -1,0 +1,121 @@
+from tkinter import *
+from tkinter import messagebox
+import base64
+import random
+
+def generate_random_key():
+    # Generate a random 4-digit shift key
+    return random.randint(1000, 9999)
+
+def encrypt():
+    message = text1.get(1.0, END).strip()
+    shift = shift_entry.get()
+
+    if shift == "":
+        messagebox.showerror("Error", "Please enter the secret key.")
+        return
+
+    try:
+        shift = int(shift)
+    except ValueError:
+        messagebox.showerror("Error", "Invalid secret key. Please enter a number.")
+        return
+
+    language = language_choice.get()
+    alphabet = alphabets.get(language, alphabets['English'])
+
+    encrypted_message = ''
+    for char in message:
+        if char.lower() in alphabet:
+            if char.isupper():
+                encrypted_message += alphabet[(alphabet.index(char.lower()) + shift) % len(alphabet)].upper()
+            else:
+                encrypted_message += alphabet[(alphabet.index(char.lower()) + shift) % len(alphabet)]
+        else:
+            encrypted_message += char
+
+    display_message("Encrypted Message", encrypted_message)
+
+def decrypt():
+    message = text1.get(1.0, END).strip()
+    shift = shift_entry.get()
+
+    if shift == "":
+        messagebox.showerror("Error", "Please enter the secret key.")
+        return
+
+    try:
+        shift = int(shift)
+    except ValueError:
+        messagebox.showerror("Error", "Invalid secret key. Please enter a number.")
+        return
+
+    language = language_choice.get()
+    alphabet = alphabets.get(language, alphabets['English'])
+
+    decrypted_message = ''
+    for char in message:
+        if char.lower() in alphabet:
+            if char.isupper():
+                decrypted_message += alphabet[(alphabet.index(char.lower()) - shift) % len(alphabet)].upper()
+            else:
+                decrypted_message += alphabet[(alphabet.index(char.lower()) - shift) % len(alphabet)]
+        else:
+            decrypted_message += char
+
+    display_message("Decrypted Message", decrypted_message)
+
+def display_message(title, message):
+    new_window = Toplevel(screen)
+    new_window.title(title)
+
+    text_widget = Text(new_window, wrap=WORD, height=5, width=50, font=("Times New Roman", 14))
+    text_widget.pack(padx=20, pady=20)
+    text_widget.insert(END, message)
+
+    # Enable copying of the message
+    text_widget.config(state=DISABLED)  # Make the text widget read-only
+    text_widget.bind("<1>", lambda event: text_widget.focus_set())  # Make the text widget selectable
+    text_widget.bind("<Control-a>", lambda event: text_widget.tag_add(SEL, "1.0", END))  # Select all text
+    text_widget.bind("<Control-c>", lambda event: new_window.clipboard_append(text_widget.selection_get()))  # Copy selected text
+
+def generate_shift_key():
+    generated_key = generate_random_key()
+    messagebox.showinfo("Generated Secret Key", f"The generated secrett key is: {generated_key}")
+    shift_entry.delete(0, END)
+    shift_entry.insert(0, generated_key)
+
+# Create GUI
+screen = Tk()
+screen.geometry("600x400")
+screen.title("Message Encryption and decryption(Caesar Cipher)")
+screen.configure(bg="black")
+
+# Define alphabets for different languages
+alphabets = {
+    'English': 'abcdefghijklmnopqrstuvwxyz',
+    'Tamil': 'அஆஇஈஉஊ஋எஏஐஒஓஔகஙசஜஞடணதநபமயரலவழளறனஸஷஹ௦௧௨௩௪௫௬௭௮௯௰௱௲',
+    'Kannada': 'ಅಆಇಈಉಊಋಎಏಐಒಓಔಕಖಗಘಙಚಛಜಝಞಟಠಡಢಣತಥದಧನಪಫಬಭಮಯರಱಲಳವಶಷಸಹಽೠೡೢೣ೤೥',
+    'Hindi': 'अआइईउऊऋएऐओऔकखगघङचछजझञटठडढणतथदधनपफबभमयरलवशषसहऽॐ।॥',
+    'Telugu': 'అఆఇఈఉఊఋౠఌఎఏఐఒఓఔకఖగఘఙచఛజఝఞటఠడఢణతథదధనపఫబభమయరఱలళవశషసహ',
+}
+
+Label(screen, text="Enter the Message:", bg="black", fg="white", font=("Times New Roman", 14)).pack()
+text1 = Text(screen, height=5, width=50, font=("Times New Roman", 14))
+text1.pack()
+
+Label(screen, text="Select Language:", bg="black", fg="white", font=("Times New Roman", 14)).pack()
+language_choice = StringVar(screen)
+language_choice.set('English')  # Default language
+OptionMenu(screen, language_choice, *alphabets.keys()).pack()
+
+Label(screen, text="Enter the Secret Key :", bg="black", fg="white", font=("Times New Roman", 14)).pack()
+shift_entry = Entry(screen, show="*", font=("Times New Roman", 14))
+shift_entry.pack()
+
+Button(screen, text="Encrypt", command=encrypt, bg="green", fg="white", font=("Times New Roman", 14)).pack()
+Button(screen, text="Decrypt", command=decrypt, bg="red", fg="white", font=("Times New Roman", 14)).pack()
+
+Button(screen, text="Generate Secret Key", command=generate_shift_key, bg="blue", fg="white", font=("Times New Roman", 14)).pack()
+
+screen.mainloop()
