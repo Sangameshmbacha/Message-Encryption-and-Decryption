@@ -1,10 +1,10 @@
-Message Encryption and Decryption(Caesar cipher)
+# Message Encryption and Decryption(Caesar cipher)
 
-Description :
+# Description :
 
 This is a simple Python application for encrypting and decrypting messages using the Caesar cipher technique. The application provides a graphical user interface (GUI) built with Tkinter.
 
-Features :
+# Features :
 
 Encrypt messages using the Caesar cipher algorithm with a customizable shift value. Decrypt encrypted messages.
 
@@ -12,11 +12,11 @@ Supports multiple languages including English, Tamil, Kannada, and Hindi.
 
 User-friendly interface for easy encryption and decryption.
 
-Requirements :
+# Requirements :
 
 Python 3.x Tkinter library (usually comes pre-installed with Python) base64 library (usually comes pre-installed with Python)
 
-Usage :
+# Usage :
 
 Clone the repository to your local machine. Navigate to the project directory.
 
